@@ -138,7 +138,7 @@ function App() {
       let message = JSON.parse(event.data);
       var data = message.data && message.data.message;
       if (data) message = JSON.parse(data);
-      console.log(new Date().toLocaleString(), "RECV:", message);
+      console.log(new Date().toLocaleString(), "RECV:", message, "USER_ID:", userId);
       if (message.type === "PONG") {
         if (!connected) {
           getUserId().then((channelId) => {
