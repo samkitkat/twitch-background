@@ -28,7 +28,7 @@ function App() {
   const [third, setThird] = useState({ r: 255, g: 255, b: 255 });
   const [fourth, setFourth] = useState({ r: 255, g: 255, b: 255 });
 
-  const inputHex = 0;
+  var inputHex = 0;
 
   var ws = useRef();
 
@@ -228,7 +228,7 @@ function App() {
 
         background: `linear-gradient(60deg, rgba(${first.r},${first.g},${first.b}) 0%, rgba(${second.r},${second.g},${second.b}), 
         rgba(${third.r},${third.g},${third.b}), rgba(${fourth.r},${fourth.g},${fourth.b}) 100%)`,
-        backgroundSize: '400% 400%',
+        backgroundSize: '400% 400% !important',
         animation: 'gradient 20s ease infinite',
         animationDirection: 'alternate',
       }}
