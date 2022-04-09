@@ -2,13 +2,13 @@ import logo from "./logo.svg";
 import "./App.css";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-const clientId = "jzrppcr9rjx38gwy84w3v6s56t0v2t";
-const redirectURI = "https://lormanlau.github.io/twitch-background/";
+const clientId = "5styqm5roq5f90rfyylk9fezdiu1mm";
+const redirectURI = "https://samkitkat.github.io/twitch-background/";
 const scope = "channel:read:redemptions%20user:read:email";
 
-const getRandomInt = () => {
-  return Math.floor(Math.random() * 256);
-};
+// const getRandomInt = () => {
+//   return Math.floor(Math.random() * 256);
+// };
 
 const hexToRgb = (hex) => {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -29,23 +29,29 @@ function App() {
   const [ready, setReady] = useState(false);
   const [demo, setDemo] = useState(true);
   const [_authUrl, setAuthUrl] = useState("/twitch-background");
-  const [left, setLeft] = useState({ r: 84, g: 58, b: 183 });
-  const [right, setRight] = useState({ r: 0, g: 172, b: 193 });
+  const [left, setLeft] = useState({ r: 0, g: 255, b: 0 });
+  const [right, setRight] = useState({ r: 255, g: 255, b: 255 });
+
+  const [first, setFirst] = useState({ r: 0, g: 255, b: 0 });
+  const [second, setSecond] = useState({ r: 255, g: 255, b: 255 });
+  const [third, setThird] = useState({ r: 0, g: 255, b: 0 });
+  const [fourth, setFourth] = useState({ r: 255, g: 255, b: 255 });
+
   var ws = useRef();
 
   /* for testing to generate random colors */
-  useEffect(() => {
-    let clock;
-    if (demo) {
-      clock = setInterval(() => {
-        setLeft({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
-        setRight({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
-      }, 5000);
-    }
-    return () => {
-      clearInterval(clock);
-    };
-  }, [demo]);
+  // useEffect(() => {
+  //   let clock;
+  //   if (demo) {
+  //     clock = setInterval(() => {
+  //       setLeft({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
+  //       setRight({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
+  //     }, 5000);
+  //   }
+  //   return () => {
+  //     clearInterval(clock);
+  //   };
+  // }, [demo]);
 
   var parseFragment = (hash) => {
     var hashMatch = function (expr) {
@@ -149,10 +155,36 @@ function App() {
       if (message.type === "reward-redeemed") {
         let color = message.data.redemption.user_input;
         let rgbValue = hexToRgb(color);
+        let inputHex = 0;
+
         if (message.data.reward.title.includes("left")) {
           setLeft(rgbValue);
-        } else if (message.reward.title.includes("right")) {
+        } 
+        
+        else if (message.reward.title.includes("right")) {
           setRight(rgbValue);
+        } 
+        
+        else if (message.reward.title.includes("gradient")) {
+
+          if (inputHex === 0) { 
+            setFirst(rgbValue); 
+          }
+          else if (inputHex === 1) {
+            setSecond(rgbValue);
+          }
+          else if (inputHex === 2) {
+            setThird(rgbValue);
+          }
+          else if (inputHex === 3) {
+            setFourth(rgbValue);
+          }
+
+          inputHex ++;
+
+          if (inputHex > 3) {
+            inputHex = 0;
+          }
         }
       }
     };
@@ -183,7 +215,12 @@ function App() {
     <div
       className="header"
       style={{
-        background: `linear-gradient(60deg, rgba(${left.r},${left.g},${left.b}) 0%, rgba(${right.r},${right.g},${right.b}) 100%)`,
+        // background: `linear-gradient(60deg, rgba(${left.r},${left.g},${left.b}) 0%, rgba(${right.r},${right.g},${right.b}) 100%)`,
+        background: `linear-gradient(60deg, rgba(${first.r},${first.g},${first.b}) 0%, rgba(${second.r},${second.g},${second.b}), 
+        rgba(${third.r},${third.g},${third.b}), rgba(${fourth.r},${fourth.g},${fourth.b}) 100%)`,
+        backgroundSize: '400% 400%',
+        animation: 'gradient 20s ease infinite',
+        animationDirection: 'alternate',
       }}
     >
       <div className="inner-header flex">
@@ -201,7 +238,7 @@ function App() {
           </div>
         </div>
       </div>
-      <div>
+      {/* <div>
         <svg
           className="waves"
           xmlns="http://www.w3.org/2000/svg"
@@ -232,7 +269,7 @@ function App() {
             <use href="#gentle-wave" x="48" y="7" fill="#fff" />
           </g>
         </svg>
-      </div>
+      </div> */}
     </div>
   );
 }
