@@ -27,14 +27,15 @@ const hexToRgb = (hex) => {
 
 function App() {
   const [ready, setReady] = useState(false);
-  const [demo, setDemo] = useState(true);
+  //const [demo, setDemo] = useState(true);
   const [_authUrl, setAuthUrl] = useState("/twitch-background");
-  const [left, setLeft] = useState({ r: 0, g: 255, b: 0 });
-  const [right, setRight] = useState({ r: 255, g: 255, b: 255 });
 
-  const [first, setFirst] = useState({ r: 0, g: 255, b: 0 });
+  //const [left, setLeft] = useState({ r: 0, g: 255, b: 0 });
+  //const [right, setRight] = useState({ r: 255, g: 255, b: 255 });
+
+  const [first, setFirst] = useState({ r: 102, g: 0, b: 204 });
   const [second, setSecond] = useState({ r: 255, g: 255, b: 255 });
-  const [third, setThird] = useState({ r: 0, g: 255, b: 0 });
+  const [third, setThird] = useState({ r: 255, g: 255, b: 255 });
   const [fourth, setFourth] = useState({ r: 255, g: 255, b: 255 });
 
   var ws = useRef();
@@ -44,8 +45,10 @@ function App() {
   //   let clock;
   //   if (demo) {
   //     clock = setInterval(() => {
-  //       setLeft({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
-  //       setRight({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
+  //       setFirst({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
+  //       setSecond({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
+  //       setThird({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
+  //       setFourth({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
   //     }, 5000);
   //   }
   //   return () => {
@@ -157,15 +160,17 @@ function App() {
         let rgbValue = hexToRgb(color);
         let inputHex = 0;
 
-        if (message.data.reward.title.includes("left")) {
-          setLeft(rgbValue);
-        } 
+        // if (message.data.reward.title.includes("left")) {
+        //   setLeft(rgbValue);
+        // } 
         
-        else if (message.reward.title.includes("right")) {
-          setRight(rgbValue);
-        } 
+        // else if (message.reward.title.includes("right")) {
+        //   setRight(rgbValue);
+        // } 
         
-        else if (message.reward.title.includes("gradient")) {
+        if (message.reward.title.includes("gradient")) {
+
+          setFirst(rgbValue);
 
           if (inputHex === 0) { 
             setFirst(rgbValue); 
@@ -204,7 +209,7 @@ function App() {
     if (sessionStorage.twitchOAuthToken) {
       connect();
       setReady(true);
-      setDemo(false);
+      //setDemo(false);
     } else {
       setAuthUrl(authUrl());
       setReady(false);
@@ -215,7 +220,8 @@ function App() {
     <div
       className="header"
       style={{
-        // background: `linear-gradient(60deg, rgba(${left.r},${left.g},${left.b}) 0%, rgba(${right.r},${right.g},${right.b}) 100%)`,
+        //background: `linear-gradient(60deg, rgba(${left.r},${left.g},${left.b}) 0%, rgba(${right.r},${right.g},${right.b}) 100%)`,
+        
         background: `linear-gradient(60deg, rgba(${first.r},${first.g},${first.b}) 0%, rgba(${second.r},${second.g},${second.b}), 
         rgba(${third.r},${third.g},${third.b}), rgba(${fourth.r},${fourth.g},${fourth.b}) 100%)`,
         backgroundSize: '400% 400%',
