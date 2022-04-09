@@ -137,6 +137,8 @@ function App() {
 
     ws.current.onmessage = function (event) {
       let message = JSON.parse(event.data);
+      var data = message.data && message.data.message;
+      if (data) message = JSON.parse(data);
       console.log(new Date().toLocaleString(), "RECV:", message);
       if (message.type === "PONG") {
         if (!connected) {
