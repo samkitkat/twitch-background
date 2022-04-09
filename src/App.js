@@ -227,8 +227,7 @@ function App() {
         //background: `linear-gradient(60deg, rgba(${left.r},${left.g},${left.b}) 0%, rgba(${right.r},${right.g},${right.b}) 100%)`,
 
         background: `linear-gradient(60deg, rgba(${first.r},${first.g},${first.b}) 0%, rgba(${second.r},${second.g},${second.b}), 
-        rgba(${third.r},${third.g},${third.b}), rgba(${fourth.r},${fourth.g},${fourth.b}) 100%)`,
-        backgroundSize: '400% 400% !important',
+        rgba(${third.r},${third.g},${third.b}), rgba(${fourth.r},${fourth.g},${fourth.b}) 100%) 0% 0% / 400% 400%`,
         animation: 'gradient 20s ease infinite',
         animationDirection: 'alternate',
       }}
