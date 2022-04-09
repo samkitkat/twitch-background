@@ -6,7 +6,7 @@ import { updateRedeemStatus, status } from "./utils/updateRedeemStatus";
 
 const clientId = "5styqm5roq5f90rfyylk9fezdiu1mm";
 const redirectURI = "https://samkitkat.github.io/twitch-background/";
-const scope = "channel:read:redemptions%20user:read:email";
+const scope = "channel:read:redemptions%20user:read:email%20channel:manage:redemptions";
 
 // const getRandomInt = () => {
 //   return Math.floor(Math.random() * 256);
