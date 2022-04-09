@@ -157,7 +157,7 @@ function App() {
         let rgbValue = hexToRgb(color);
         if (!userId) {
           if (!rgbValue.valid) {
-            updateRedeemStatus(userId, message.data.redemption.reward.id, message.data.redemption.id, status.canceled);
+            updateRedeemStatus(clientId, userId, message.data.redemption.reward.id, message.data.redemption.id, status.canceled);
             return;
           }
           // let inputHex = 0;
@@ -192,7 +192,7 @@ function App() {
             if (inputHex > 3) {
               inputHex = 0;
             }
-            updateRedeemStatus(userId, message.data.redemption.reward.id, message.data.redemption.id, status.fulfilled);
+            updateRedeemStatus(clientId, userId, message.data.redemption.reward.id, message.data.redemption.id, status.fulfilled);
           }
         }
       }
