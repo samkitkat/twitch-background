@@ -27,8 +27,7 @@ function App() {
   const [second, setSecond] = useState({ r: 255, g: 255, b: 255 });
   const [third, setThird] = useState({ r: 255, g: 255, b: 255 });
   const [fourth, setFourth] = useState({ r: 255, g: 255, b: 255 });
-
-  var inputHex = 0;
+  const [inputHex, setInputHex] = useState(0);
 
   var ws = useRef();
 
@@ -187,11 +186,12 @@ function App() {
               setFourth(rgbValue);
             }
 
-            inputHex++;
-
-            if (inputHex > 3) {
-              inputHex = 0;
-            }
+            setInputHex(currentState => {
+              if (currentState > 3) {
+                return 0;
+              }
+              return currentState++;
+            });
             updateRedeemStatus(clientId, userId, message.data.redemption.reward.id, message.data.redemption.id, status.fulfilled);
           }
         }
@@ -205,7 +205,7 @@ function App() {
       setTimeout(connect, reconnectInterval);
       connected = false;
     };
-  }, [ws, listen]);
+  }, [ws, listen, userId, inputHex]);
 
   useEffect(() => {
     if (document.location.hash.match(/access_token=(\w+)/))
