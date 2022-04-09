@@ -9,7 +9,7 @@ export const updateRedeemStatus = (client_id, user_id, reward_id, redeem_id, sta
         body: JSON.stringify({ "status": status }),
         headers: {
             'client-id': client_id,
-            'Authorization': sessionStorage.twitchOAuthToken,
+            'Authorization': `Bearer ${sessionStorage.twitchOAuthToken}`,
             'Content-type': 'application/json;',
         },
     })
