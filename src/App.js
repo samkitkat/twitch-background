@@ -154,7 +154,7 @@ function App() {
       if (message.type === "reward-redeemed") {
         let color = message.data.redemption.user_input;
         let rgbValue = hexToRgb(color);
-        if (!userId) {
+        if (userId) {
           if (!rgbValue.valid) {
             updateRedeemStatus(clientId, userId, message.data.redemption.reward.id, message.data.redemption.id, status.canceled);
             return;
