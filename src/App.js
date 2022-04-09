@@ -1,6 +1,8 @@
 import logo from "./logo.svg";
 import "./App.css";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { hexToRgb } from "./utils/hexToRgb";
+import { updateRedeemStatus, status } from "./utils/updateRedeemStatus";
 
 const clientId = "5styqm5roq5f90rfyylk9fezdiu1mm";
 const redirectURI = "https://samkitkat.github.io/twitch-background/";
@@ -10,20 +12,7 @@ const scope = "channel:read:redemptions%20user:read:email";
 //   return Math.floor(Math.random() * 256);
 // };
 
-const hexToRgb = (hex) => {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
-    : {
-        r: 0,
-        g: 0,
-        b: 0,
-      };
-};
+
 
 function App() {
   const [ready, setReady] = useState(false);
@@ -33,10 +22,13 @@ function App() {
   //const [left, setLeft] = useState({ r: 0, g: 255, b: 0 });
   //const [right, setRight] = useState({ r: 255, g: 255, b: 255 });
 
+  const [userId, setUserId] = useState();
   const [first, setFirst] = useState({ r: 102, g: 0, b: 204 });
   const [second, setSecond] = useState({ r: 255, g: 255, b: 255 });
   const [third, setThird] = useState({ r: 255, g: 255, b: 255 });
   const [fourth, setFourth] = useState({ r: 255, g: 255, b: 255 });
+
+  const inputHex = 0;
 
   var ws = useRef();
 
@@ -90,7 +82,10 @@ function App() {
       },
     })
       .then((res) => res.json())
-      .then((data) => data.data[0].id);
+      .then((data) => {
+        setUserId(data.data[0].id)
+        return data.data[0].id
+      });
   };
 
   var nonce = (length) => {
@@ -158,37 +153,44 @@ function App() {
       if (message.type === "reward-redeemed") {
         let color = message.data.redemption.user_input;
         let rgbValue = hexToRgb(color);
-        let inputHex = 0;
-
-        // if (message.data.reward.title.includes("left")) {
-        //   setLeft(rgbValue);
-        // } 
-        
-        // else if (message.reward.title.includes("right")) {
-        //   setRight(rgbValue);
-        // } 
-        
-        if (message.reward.title.includes("gradient")) {
-
-          setFirst(rgbValue);
-
-          if (inputHex === 0) { 
-            setFirst(rgbValue); 
+        if (!userId) {
+          if (!rgbValue.valid) {
+            updateRedeemStatus(userId, message.data.redemption.reward.id, message.data.redemption.id, status.canceled);
+            return;
           }
-          else if (inputHex === 1) {
-            setSecond(rgbValue);
-          }
-          else if (inputHex === 2) {
-            setThird(rgbValue);
-          }
-          else if (inputHex === 3) {
-            setFourth(rgbValue);
-          }
+          // let inputHex = 0;
 
-          inputHex ++;
+          // if (message.data.reward.title.includes("left")) {
+          //   setLeft(rgbValue);
+          // } 
 
-          if (inputHex > 3) {
-            inputHex = 0;
+          // else if (message.data.reward.title.includes("right")) {
+          //   setRight(rgbValue);
+          // } 
+
+          if (message.data.redemption.reward.title.includes("gradient")) {
+
+            // setFirst(rgbValue);
+
+            if (inputHex === 0) {
+              setFirst(rgbValue);
+            }
+            else if (inputHex === 1) {
+              setSecond(rgbValue);
+            }
+            else if (inputHex === 2) {
+              setThird(rgbValue);
+            }
+            else if (inputHex === 3) {
+              setFourth(rgbValue);
+            }
+
+            inputHex++;
+
+            if (inputHex > 3) {
+              inputHex = 0;
+            }
+            updateRedeemStatus(userId, message.data.redemption.reward.id, message.data.redemption.id, status.fulfilled);
           }
         }
       }
@@ -221,7 +223,7 @@ function App() {
       className="header"
       style={{
         //background: `linear-gradient(60deg, rgba(${left.r},${left.g},${left.b}) 0%, rgba(${right.r},${right.g},${right.b}) 100%)`,
-        
+
         background: `linear-gradient(60deg, rgba(${first.r},${first.g},${first.b}) 0%, rgba(${second.r},${second.g},${second.b}), 
         rgba(${third.r},${third.g},${third.b}), rgba(${fourth.r},${fourth.g},${fourth.b}) 100%)`,
         backgroundSize: '400% 400%',
