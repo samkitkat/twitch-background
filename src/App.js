@@ -157,8 +157,10 @@ function App() {
               if (currentState > 3) {
                 return 0;
               }
-              return inputHex = inputHex + 1;
+              return currentState+1;
             });
+            console.log(setInputHex);
+            //idk why its not working :(
             updateRedeemStatus(clientId, userId, message.data.redemption.reward.id, message.data.redemption.id, status.fulfilled);
           }
         }
