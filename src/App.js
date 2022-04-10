@@ -12,15 +12,9 @@ const scope = "channel:read:redemptions%20user:read:email%20channel:manage:redem
 //   return Math.floor(Math.random() * 256);
 // };
 
-
-
 function App() {
   const [ready, setReady] = useState(false);
-  //const [demo, setDemo] = useState(true);
   const [_authUrl, setAuthUrl] = useState("/twitch-background");
-
-  //const [left, setLeft] = useState({ r: 0, g: 255, b: 0 });
-  //const [right, setRight] = useState({ r: 255, g: 255, b: 255 });
 
   const [userId, setUserId] = useState();
   const [first, setFirst] = useState({ r: 102, g: 0, b: 204 });
@@ -30,22 +24,6 @@ function App() {
   const [inputHex, setInputHex] = useState(0);
 
   var ws = useRef();
-
-  /* for testing to generate random colors */
-  // useEffect(() => {
-  //   let clock;
-  //   if (demo) {
-  //     clock = setInterval(() => {
-  //       setFirst({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
-  //       setSecond({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
-  //       setThird({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
-  //       setFourth({ r: getRandomInt(), g: getRandomInt(), b: getRandomInt() });
-  //     }, 5000);
-  //   }
-  //   return () => {
-  //     clearInterval(clock);
-  //   };
-  // }, [demo]);
 
   var parseFragment = (hash) => {
     var hashMatch = function (expr) {
@@ -159,19 +137,8 @@ function App() {
             updateRedeemStatus(clientId, userId, message.data.redemption.reward.id, message.data.redemption.id, status.canceled);
             return;
           }
-          // let inputHex = 0;
-
-          // if (message.data.reward.title.includes("left")) {
-          //   setLeft(rgbValue);
-          // } 
-
-          // else if (message.data.reward.title.includes("right")) {
-          //   setRight(rgbValue);
-          // } 
 
           if (message.data.redemption.reward.title.includes("gradient")) {
-
-            // setFirst(rgbValue);
 
             if (inputHex === 0) {
               setFirst(rgbValue);
@@ -190,7 +157,7 @@ function App() {
               if (currentState > 3) {
                 return 0;
               }
-              return currentState++;
+              return currentState+1;
             });
             updateRedeemStatus(clientId, userId, message.data.redemption.reward.id, message.data.redemption.id, status.fulfilled);
           }
@@ -213,7 +180,6 @@ function App() {
     if (sessionStorage.twitchOAuthToken) {
       connect();
       setReady(true);
-      //setDemo(false);
     } else {
       setAuthUrl(authUrl());
       setReady(false);
@@ -224,8 +190,6 @@ function App() {
     <div
       className="header"
       style={{
-        //background: `linear-gradient(60deg, rgba(${left.r},${left.g},${left.b}) 0%, rgba(${right.r},${right.g},${right.b}) 100%)`,
-
         background: `linear-gradient(60deg, rgba(${first.r},${first.g},${first.b}) 0%, rgba(${second.r},${second.g},${second.b}), 
         rgba(${third.r},${third.g},${third.b}), rgba(${fourth.r},${fourth.g},${fourth.b}) 100%) 0% 0% / 400% 400%`,
         animation: 'gradient 20s ease infinite',
@@ -247,38 +211,6 @@ function App() {
           </div>
         </div>
       </div>
-      {/* <div>
-        <svg
-          className="waves"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 24 150 28"
-          preserveAspectRatio="none"
-          shapeRendering="auto"
-        >
-          <defs>
-            <path
-              id="gentle-wave"
-              d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
-            />
-          </defs>
-          <g className="parallax">
-            <use href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
-            <use
-              href="#gentle-wave"
-              x="48"
-              y="3"
-              fill="rgba(255,255,255,0.5)"
-            />
-            <use
-              href="#gentle-wave"
-              x="48"
-              y="5"
-              fill="rgba(255,255,255,0.3)"
-            />
-            <use href="#gentle-wave" x="48" y="7" fill="#fff" />
-          </g>
-        </svg>
-      </div> */}
     </div>
   );
 }
