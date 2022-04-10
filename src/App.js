@@ -157,7 +157,9 @@ function App() {
               if (currentState > 3) {
                 return 0;
               }
-              return currentState+1;
+              else{
+                return currentState+1;
+              }
             });
             updateRedeemStatus(clientId, userId, message.data.redemption.reward.id, message.data.redemption.id, status.fulfilled);
           }
