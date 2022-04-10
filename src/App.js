@@ -157,7 +157,7 @@ function App() {
               if (currentState > 3) {
                 return 0;
               }
-              return this.setState({ InputHex: this.state.InputHex + 1 })
+              return inputHex = inputHex + 1;
             });
             updateRedeemStatus(clientId, userId, message.data.redemption.reward.id, message.data.redemption.id, status.fulfilled);
           }
