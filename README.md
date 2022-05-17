@@ -10,6 +10,6 @@ notes:
 - channel point reward needs to have 'gradient' in the name for it to work
 - change clientId in app.js to your twitch clientId
 
-
+for more info on twitch channel point redepemption rewards api: https://dev.twitch.tv/docs/api/reference#get-custom-reward-redemption
 
 made by me and lorman <3
