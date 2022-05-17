@@ -7,6 +7,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 here's the site: https://samkitkat.github.io/twitch-background/ try it out!
 
 notes:
-channel point reward needs to have 'gradient' in the name for it to work
+
+- channel point reward needs to have 'gradient' in the name for it to work
+- change clientId in app.js to your twitch clientId
 
 made by me and lorman <3
